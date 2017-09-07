@@ -2,10 +2,25 @@
 //#include <math.h>
 
 double pow(double, double);
+double log(double);
+
+
+/* globals */
+double semitone_ratio;
+double c0;
+
+/* find the nearest note to a give frequency in Hz */
+/* uses the log rule :
+  log_a(N) = log_b(N) / log_b(a)
+*/
+
+void freq2midi(double frequency) {
+    double fracmidi = log(frequency / c0) / log(semitone_ratio);
+    int midinote = (int) (fracmidi + 0.5);
+    printf("The nearest MIDI note to frequency %f is %d\n", frequency, midinote);
+}
 
 int main() {
-    double semitone_ratio;
-    double c0;
     double c5;
     double frequency;
     int midinote;
@@ -23,6 +38,8 @@ int main() {
     frequency = c0 * pow(semitone_ratio, midinote);
 
     printf("MIDI Note %d has frequency %f\n", midinote, frequency);
+
+    freq2midi(frequency);
 
     return 0;
 
